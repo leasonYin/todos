@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import './App.css';
 import Todos from './components/Todos';
 import Header from './components/Header';
@@ -9,37 +9,38 @@ import About from './components/About';
 import AddTodo from './components/AddTodo';
 import axios from 'axios'
 
-class App extends Component {
+function App(props) {
 
-  constructor(props) {
-    super(props);
-    this.state = {}
-  }
+  const [todos, setTodos] = useState([]);
 
-  markComplete = (id) => () => {
-    this.setState({
-      todos: this.state.todos.map(todo => {
+  useLayoutEffect(() => {
+    axios.get("https://jsonplaceholder.typicode.com/todos?_limit=10")
+      .then(resp => setTodos([...resp.data]));
+  }, []);
+
+  const markComplete = (id) => () => {
+    setTodos([
+      ...todos.map(todo => {
         if (id === todo.id) {
           todo.complete = !todo.complete;
         }
         return todo;
       })
-    });
+    ]);
   }
 
-  delTodo(id) {
+  const delTodo = (id) => {
     axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
       .then(resp => {
-        console.log(resp);
-        this.setState({
-          todos: [
-            ...this.state.todos.filter(todo => id !== todo.id)
-          ]
-        })
-      });
+        setTodos([
+          ...todos.filter(todo => id !== todo.id)
+        ])
+      })
   }
 
-  addTodo(title) {
+
+
+  const addTodo = (title) => {
 
     axios.post("https://jsonplaceholder.typicode.com/todos",
       {
@@ -48,36 +49,27 @@ class App extends Component {
       })
       .then(resp => {
         console.log(resp);
-        this.setState({
-          todos: [...this.state.todos, resp.data]
-        })
+        setTodos(
+          [...todos, resp.data]
+        )
       });
 
   }
 
-  componentDidMount() {
-
-    axios.get("https://jsonplaceholder.typicode.com/todos?_limit=10")
-      .then(resp => this.setState({ todos: resp.data }));
-
-  }
-
-  render() {
-    return (
-      <BrowserRouter>
-        <div className="container">
-          <Header />
-          <Route exact path="/home" render={props => (
-            <React.Fragment>
-              <AddTodo addTodo={this.addTodo.bind(this)} />
-              <Todos todos={this.state.todos} markComplete={this.markComplete} delTodo={this.delTodo.bind(this)} />
-            </React.Fragment>
-          )} />
-          <Route path="/about" component={About} />
-        </div>
-      </BrowserRouter>
-    );
-  }
+  return (
+    <BrowserRouter>
+      <div className="container">
+        <Header />
+        <Route exact path="/home" render={props => (
+          <React.Fragment>
+            <AddTodo addTodo={addTodo} />
+            <Todos todos={todos} markComplete={markComplete} delTodo={delTodo} />
+          </React.Fragment>
+        )} />
+        <Route path="/about" component={About} />
+      </div>
+    </BrowserRouter>
+  );
 }
 
 export default App;

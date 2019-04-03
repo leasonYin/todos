@@ -15,29 +15,26 @@ function TodoItem(props) {
     );
 }
 
-export class Todos extends Component {
-
-    render() {
-        if (this.props.todos) {
-            return (
-                <div className="row">
-                    <div className="col-12">
-                        <ListGroup>
-                            {this.props.todos.map(todo => (
-                                <TodoItem key={todo.id}
-                                    todo={todo}
-                                    markComplete={this.props.markComplete}
-                                    delTodo={this.props.delTodo} />
-                            ))}
-                        </ListGroup>
-                    </div>
+export function Todos({ todos, markComplete, delTodo }) {
+    if (todos.length > 0) {
+        return (
+            <div className="row">
+                <div className="col-12 rounded-0">
+                    <ListGroup >
+                        {todos.map(todo => (
+                            <TodoItem key={todo.id}
+                                todo={todo}
+                                markComplete={markComplete}
+                                delTodo={delTodo} />
+                        ))}
+                    </ListGroup>
                 </div>
-            )
-        } else {
-            return (
-                <Loading />
-            );
-        }
+            </div>
+        )
+    } else {
+        return (
+            <Loading />
+        );
     }
 }
 

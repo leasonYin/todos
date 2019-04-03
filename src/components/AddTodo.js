@@ -33,8 +33,9 @@ export class AddTodo extends Component {
                         <Input name="title" 
                                value={this.state.title} 
                                placeholder="Add Todo ..."
-                               onChange={this.changeTitle} />
-                        <Button type="submit" color="dark" onClick={this.submit.bind(this)}>Add...</Button>
+                               onChange={this.changeTitle} 
+                               className="rounded-0"/>
+                        <Button type="submit" color="dark" className="rounded-0" onClick={this.submit.bind(this)}>Add...</Button>
                     </InputGroup>
                     </div>
                 </Form>
