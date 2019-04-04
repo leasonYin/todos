@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Todos from './components/Todos';
 import Header from './components/Header';
@@ -9,11 +9,13 @@ import About from './components/About';
 import AddTodo from './components/AddTodo';
 import axios from 'axios'
 
+export const ThemeCtx = React.createContext({bg: 'primary', text: 'danger'});
+
 function App(props) {
 
   const [todos, setTodos] = useState([]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     axios.get("https://jsonplaceholder.typicode.com/todos?_limit=10")
       .then(resp => setTodos([...resp.data]));
   }, []);
@@ -58,16 +60,18 @@ function App(props) {
 
   return (
     <BrowserRouter>
-      <div className="container">
-        <Header />
-        <Route exact path="/home" render={props => (
-          <React.Fragment>
-            <AddTodo addTodo={addTodo} />
-            <Todos todos={todos} markComplete={markComplete} delTodo={delTodo} />
-          </React.Fragment>
-        )} />
-        <Route path="/about" component={About} />
-      </div>
+      <ThemeCtx.Provider value={{bg: 'info', text: 'white'}}>
+        <div className="container">
+          <Header />
+          <Route exact path="/home" render={props => (
+            <React.Fragment>
+              <AddTodo addTodo={addTodo} />
+              <Todos todos={todos} markComplete={markComplete} delTodo={delTodo} />
+            </React.Fragment>
+          )} />
+          <Route path="/about" component={About} />
+        </div>
+      </ThemeCtx.Provider>
     </BrowserRouter>
   );
 }

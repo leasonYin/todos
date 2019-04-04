@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { ListGroup, ListGroupItem, Button, Input } from 'reactstrap';
+import React from 'react'
+import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import Loading from './Loading';
 
 function TodoItem(props) {
