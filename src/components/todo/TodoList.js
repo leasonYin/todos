@@ -8,25 +8,37 @@ export default function TodoList(props) {
         todos: PropTypes.array.isRequired
     }
 
+    const todoList = props.todos.map(todo =>
+        <TodoItem key={todo.id}
+            todo={todo}
+            criteria={props.criteria}
+            uncompleteOnly={props.uncompleteOnly}
+            toggleComplete={props.toggleComplete}
+            deleteTodo={props.deleteTodo} />
+    );
+
+    const errorContent = () => {
+        if (props.errorMessage) {
+            return (
+                <div className="col-12">
+                    <span className="fa fa-exclamation-triangle mr-2"></span>
+                    <span className="text-danger">{props.errorMessage}</span>
+                </div>
+            );
+        } else {
+            return null;
+        }
+    }
+
     return (
         <div className="row">
+            {errorContent()}
             <div className="col-12">
                 <ListGroup>
-                    {
-                        props.todos.map(todo => {
-                            return (
-                                <TodoItem key={todo.id}
-                                    todo={todo}
-                                    criteria={props.criteria}
-                                    uncompleteOnly={props.uncompleteOnly}
-                                    toggleComplete={props.toggleComplete}
-                                    deleteTodo={props.deleteTodo}
-                                />)
-                        })
-                    }
+                    {todoList}
                 </ListGroup>
             </div>
-        </div>
+        </div >
     )
 }
 

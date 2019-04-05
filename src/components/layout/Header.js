@@ -9,17 +9,17 @@ function Header(props) {
 
     return (
         <div className="container">
-            <div className="text-white bg-dark">
+            <div className="text-white bg-info">
                 <Navbar dark expand="md">
                     <NavbarToggler onClick={() => setCollapsed(!collpased)} />
                     <NavbarBrand className="mr-auto">
-                        <span className="px-2">Todo List</span>
-                        <Loading waiting={props.waiting} />
+                        <span className="px-2">Workspace</span>
+                        <Loading loading={props.loading} />
                     </NavbarBrand>
                     <Collapse isOpen={collpased} className="mr-auto" navbar>
                         <Nav navbar>
-                            <NavItem ><NavLink className="nav-link" to="/home">
-                                <span className="fa fa-home fa-lg"></span> Home
+                            <NavItem ><NavLink className="nav-link" to="/todos">
+                                <span className="fa fa-tasks fa-lg"></span> Todo
                             </NavLink></NavItem>
                             <NavItem ><NavLink className="nav-link" to="/about">
                                 <span className="fa fa-info fa-lg"></span> About
