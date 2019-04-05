@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
-import { ThemeCtx } from '../App';
+import { ThemeCtx } from '../../App';
 
 export default function About() {
 
@@ -19,7 +19,7 @@ export default function About() {
   }
 
   return (
-    <React.Fragment>
+    <div className="container">
       <div className="row">
         <div className="col-6">
           <span className="mr-auto">You clicked ${count} times</span>
@@ -40,7 +40,7 @@ export default function About() {
           <Mouse chase={catChase} />
         </div>
       </div>
-    </React.Fragment >
+    </div>
   );
 
 

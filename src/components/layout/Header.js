@@ -1,30 +1,22 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { Navbar, NavbarBrand, Nav, NavItem, Collapse, NavbarToggler } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+import Loading from '../utils/Loading';
 
-class Header extends Component {
+function Header(props) {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            collpased: false
-        }
-        this.toggleNav = this.toggleNav.bind(this);
-    }
+    const [collpased, setCollapsed] = useState(false);
 
-    toggleNav() {
-        this.setState({
-            collpased: !this.state.collpased
-        })
-    }
-
-    render() {
-        return (
-            <div className="text-white">
+    return (
+        <div className="container">
+            <div className="text-white bg-dark">
                 <Navbar dark expand="md">
-                    <NavbarToggler onClick={this.toggleNav} />
-                    <NavbarBrand className="mr-auto">TodoList</NavbarBrand>
-                    <Collapse isOpen={this.state.collpased} className="mr-auto" navbar>
+                    <NavbarToggler onClick={() => setCollapsed(!collpased)} />
+                    <NavbarBrand className="mr-auto">
+                        <span className="px-2">Todo List</span>
+                        <Loading waiting={props.waiting} />
+                    </NavbarBrand>
+                    <Collapse isOpen={collpased} className="mr-auto" navbar>
                         <Nav navbar>
                             <NavItem ><NavLink className="nav-link" to="/home">
                                 <span className="fa fa-home fa-lg"></span> Home
@@ -36,8 +28,8 @@ class Header extends Component {
                     </Collapse>
                 </Navbar>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Header;
