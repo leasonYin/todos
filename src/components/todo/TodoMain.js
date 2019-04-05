@@ -31,9 +31,10 @@ export function TodoMain(props) {
         ]);
     }
 
-    const deleteTodo = (id) => {
+    const customFetch = (action, ...params) => {
+
         setLoading(true);
-        fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        fetch(...params)
             .then(resp => {
                 if (resp.ok) {
                     return resp;
@@ -45,19 +46,31 @@ export function TodoMain(props) {
             }, error => {
                 throw error;
             })
-            .then(resp => {
-                setTodos([...todos.filter(todo => todo.id !== id)])
-            })
-            .then(() => { setLoading(false) })
-            .then(() => { setErrorMessage(null) })
+            .then(resp => resp.json())
+            .then(jsonData => { action(jsonData) })
+            .then(() => setLoading(false))
             .catch(error => {
                 setErrorMessage(error.message);
             })
     }
 
+    const deleteTodo = (id) => {
+        customFetch(
+            (data => {
+                setTodos([...todos.filter(todo => todo.id !== id)])
+            }),
+            `https://jsonplaceholder.typicode.com/todos/${id}`,
+            {
+                method: "DELETE"
+            })
+    }
+
     const addTodo = (title) => {
-        setLoading(true);
-        fetch("https://jsonplaceholder.typicode.com/todos",
+        customFetch(
+            todo => {
+                setTodos([...todos, todo]);
+            },
+            "https://jsonplaceholder.typicode.com/todos",
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -69,49 +82,15 @@ export function TodoMain(props) {
                 },
                 credentials: 'same-origin'
             })
-            .then(resp => {
-                if (resp.ok) {
-                    return resp;
-                } else {
-                    let err = new Error('Error: ' + resp.status);
-                    err.response = resp;
-                    throw err;
-                }
-            }, error => {
-                throw error;
-            })
-            .then(resp => resp.json())
-            .then(todo => {
-                setTodos([...todos, todo]);
-            })
-            .then(() => setLoading(false))
-            .then(() => setErrorMessage(null))
-            .catch(error => {
-                setErrorMessage(error.message);
-            })
     }
 
     useEffect(() => {
-        setLoading(true);
-        fetch("https://jsonplaceholder.typicode.com/todos?_limit=100")
-            .then(resp => {
-                if (resp.ok) {
-                    return resp;
-                } else {
-                    let err = new Error('Error: ' + resp.status);
-                    err.response = resp;
-                    throw err;
-                }
-            }, error => {
-                throw error;
-            })
-            .then(resp => resp.json())
-            .then(todos => { setTodos(todos) })
-            .then(() => setLoading(false))
-            .catch(error => {
-                setErrorMessage(error.message);
-            })
-
+        customFetch(
+            (todos) => {
+                setTodos(todos);
+            },
+            "https://jsonplaceholder.typicode.com/todos?_limit=100"
+        );
     }, [])
 
     return (
