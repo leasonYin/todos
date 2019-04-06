@@ -10,6 +10,7 @@ export class AddTodo extends Component {
             errmsg: null
         }
         this.changeTitle = this.changeTitle.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
     }
 
     changeTitle(e) {
@@ -17,7 +18,7 @@ export class AddTodo extends Component {
         this.setState((prevState, props) => {
             const value = e.target.value;
             let errmsg = null;
-            if(value.length === 0) {
+            if (value.length === 0) {
                 errmsg = 'you must input something ...';
             }
 
@@ -29,10 +30,16 @@ export class AddTodo extends Component {
         })
     }
 
+    handleBlur() {
+        this.setState({
+            errmsg: null
+        })
+    }
+
     submit(e) {
         e.preventDefault();
-        
-        if(this.state.title.length === 0) {
+
+        if (this.state.title.length === 0) {
             this.setState({
                 errmsg: 'you must input something ...'
             })
@@ -48,21 +55,26 @@ export class AddTodo extends Component {
     render() {
 
         return (
-                <Form>
-                    <div className="form-row">
+            <Form onBlur={this.handleBlur}>
+                <div className="form-row">
                     <InputGroup className="col-12 form-input-inline">
-                        <Input name="title" 
-                               value={this.state.title} 
-                               placeholder={this.state.errmsg === null ? "Add Todo ..." : this.state.errmsg}
-                               onChange={this.changeTitle}
-                               className="rounded-0"
-                               valid={this.state.errmsg === null}
-                               invalid={this.state.errmsg !== null} />
-                        <Button type="submit" color="secondary" className="rounded-0" onClick={this.submit.bind(this)}>Add...</Button>
+                        <Input name="title"
+                            value={this.state.title}
+                            placeholder={this.state.errmsg === null ? "Add Todo ..." : this.state.errmsg}
+                            onChange={this.changeTitle}
+                            className="rounded-0"
+                            valid={this.state.errmsg === null}
+                            invalid={this.state.errmsg !== null} />
+                        <Button type="submit"
+                            color="secondary"
+                            className="rounded-0"
+                            onClick={this.submit.bind(this)}>
+                            Add...
+                        </Button>
                     </InputGroup>
-                    </div>
-                    
-                </Form>
+                </div>
+
+            </Form>
         )
     }
 }
