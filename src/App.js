@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import About from './components/about/About';
 import Footer from './components/layout/Footer';
 import TodoEntry from './components/todo/TodoEntry';
+import HooksMain from './components/hooks/HooksMain';
 
 export const ThemeCtx = React.createContext({ bg: 'primary', text: 'danger' });
 
@@ -19,6 +20,7 @@ function App() {
         <Switch>
           <Route exact path="/todos" component={TodoEntry} />
           <Route path="/about" component={About} />
+          <Route path="/hooks" component={HooksMain} />
           <Redirect to="/todos" />
         </Switch>
         <Footer />

@@ -21,8 +21,11 @@ function Header(props) {
                             <NavItem ><NavLink className="nav-link" to="/todos">
                                 <span className="fa fa-tasks fa-lg"></span> Todo
                             </NavLink></NavItem>
+                            <NavItem ><NavLink className="nav-link" to="/hooks">
+                                <span className="fa fa-laptop fa-lg"></span> Hooks
+                            </NavLink></NavItem>
                             <NavItem ><NavLink className="nav-link" to="/about">
-                                <span className="fa fa-info fa-lg"></span> About
+                                <span className="fa fa-institution fa-lg"></span> About
                             </NavLink></NavItem>
                         </Nav>
                     </Collapse>
