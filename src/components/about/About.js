@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useReducer, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { ThemeCtx } from '../../App';
 
@@ -6,11 +6,19 @@ export default function About() {
 
   const theme = useContext(ThemeCtx)
 
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    document.title = `You clicked ${count} times`;
-  });
+  const [counter, dispatch] = useReducer(
+    (counter, action) => {
+      switch (action.type) {
+        case "increment":
+          return { count: counter.count + 1 };
+        case "decrement":
+          return { count: counter.count - 1 };
+        case 'reset':
+          return { count: 0};
+        default:
+          throw new Error('unrecognized type: ' + action.type);
+      }
+    }, { count: 0 });
 
   const catChase = (x, y) => {
     return (
@@ -22,12 +30,12 @@ export default function About() {
     <div className="container">
       <div className="row">
         <div className="col-6">
-          <span className="mr-auto">You clicked ${count} times</span>
+          <span className="mr-auto">You clicked ${counter.count} times</span>
         </div>
         <div className="col-6">
-          <button type="button" onClick={() => setCount(count + 1)}>+</button>
-          <button type="button" onClick={() => setCount((prevCount) => prevCount - 1)}>-</button>
-          <button type="button" onClick={() => setCount(0)}>Reset</button>
+          <button type="button" onClick={() => dispatch({type: 'increment'})}>+</button>
+          <button type="button" onClick={() => dispatch({type: 'decrement'})}>-</button>
+          <button type="button" onClick={() => dispatch({type: 'reset'})}>Reset</button>
         </div>
       </div>
       <div className="row">

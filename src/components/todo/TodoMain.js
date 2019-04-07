@@ -2,10 +2,25 @@ import React, { useState, useEffect } from 'react'
 import TodoList from './TodoList';
 import TodoQuery from './TodoQuery';
 import AddTodo from './AddTodo';
+import { Provider, connect } from 'react-redux';
+import { TodoStore } from '../../redux/todos/store';
+import { newLoadTodosAction, toggleTodoAction, deleteTodoAction, addTodoAction } from '../../redux/todos/ActionCreators';
 
-export function TodoMain(props) {
+const mapStateToProps = state => ({
+    todos: state.todos
+});
 
-    const [todos, setTodos] = useState([]);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadTodosFromNet: todos => dispatch(newLoadTodosAction(todos)),
+        toggleTodo: (id) => dispatch(toggleTodoAction(id)),
+        deleteTodo: (id) => dispatch(deleteTodoAction(id)),
+        addTodo: (todo) => dispatch(addTodoAction(todo))
+    }
+};
+
+function TodoMain(props) {
+
     const [criteria, setCriteria] = useState('');
     const [uncompleteOnly, setUncompleteOnly] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -21,14 +36,7 @@ export function TodoMain(props) {
     }
 
     const toggleComplete = (id) => {
-        setTodos([
-            ...todos.map(todo => {
-                if (todo.id === id) {
-                    todo.complete = !todo.complete;
-                }
-                return todo;
-            })
-        ]);
+        props.toggleTodo(id);
     }
 
     const customFetch = (action, ...params) => {
@@ -56,9 +64,7 @@ export function TodoMain(props) {
 
     const deleteTodo = (id) => {
         customFetch(
-            (data => {
-                setTodos([...todos.filter(todo => todo.id !== id)])
-            }),
+            (data => { props.deleteTodo(id) }),
             `https://jsonplaceholder.typicode.com/todos/${id}`,
             {
                 method: "DELETE"
@@ -67,9 +73,7 @@ export function TodoMain(props) {
 
     const addTodo = (title) => {
         customFetch(
-            todo => {
-                setTodos([...todos, todo]);
-            },
+            todo => { props.addTodo(todo) },
             "https://jsonplaceholder.typicode.com/todos",
             {
                 method: 'POST',
@@ -87,7 +91,7 @@ export function TodoMain(props) {
     useEffect(() => {
         customFetch(
             (todos) => {
-                setTodos(todos);
+                props.loadTodosFromNet(todos);
             },
             "https://jsonplaceholder.typicode.com/todos?_limit=100"
         );
@@ -106,7 +110,7 @@ export function TodoMain(props) {
                 uncompleteOnly={uncompleteOnly}
                 handleQueryInput={handleQueryInput}
                 loading={loading} />
-            <TodoList todos={todos}
+            <TodoList todos={props.todos}
                 criteria={criteria}
                 uncompleteOnly={uncompleteOnly}
                 toggleComplete={toggleComplete}
@@ -116,4 +120,4 @@ export function TodoMain(props) {
     )
 }
 
-export default TodoMain
+export default connect(mapStateToProps, mapDispatchToProps)(TodoMain);
