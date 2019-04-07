@@ -4,10 +4,10 @@ import Loading from '../utils/Loading';
 export default function TodoQuery(props) {
     return (
         <form>
-            <div className="row">
+            <div className="row mb-2">
                 <div className="col-12 col-sm-6">
                     <input id="criteria"
-                        className="form-control form-control-sm"
+                        className="form-control"
                         name="criteria"
                         value={props.criteria}
                         placeholder="input text to filter"
