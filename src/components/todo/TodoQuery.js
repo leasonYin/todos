@@ -1,7 +1,8 @@
 import React from 'react'
 import Loading from '../utils/Loading';
+//import { withLogger } from '../../hocs/loggers'
 
-export default function TodoQuery(props) {
+function TodoQuery(props) {
     return (
         <form>
             <div className="row mb-2">
@@ -31,3 +32,6 @@ export default function TodoQuery(props) {
         </form>
     )
 }
+
+//export default withLogger(TodoQuery);
+export default TodoQuery;
