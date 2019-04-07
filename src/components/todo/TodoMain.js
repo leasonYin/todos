@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import TodoList from './TodoList';
 import TodoQuery from './TodoQuery';
 import AddTodo from './AddTodo';
-import { Provider, connect } from 'react-redux';
-import { TodoStore } from '../../redux/todos/store';
+import { connect } from 'react-redux';
 import { newLoadTodosAction, toggleTodoAction, deleteTodoAction, addTodoAction } from '../../redux/todos/ActionCreators';
 
 const mapStateToProps = state => ({

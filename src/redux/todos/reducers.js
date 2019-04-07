@@ -1,6 +1,10 @@
 import * as AT from './ActionTypes';
 
-export const todoReducer = (state, action) => {
+export const todoReducer = (
+    state = {
+        todos: []
+    },
+    action) => {
     switch (action.type) {
         case AT.LOAD_TODOS:
             return {
