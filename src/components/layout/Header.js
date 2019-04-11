@@ -18,13 +18,16 @@ function Header(props) {
                     </NavbarBrand>
                     <Collapse isOpen={collpased} className="mr-auto" navbar>
                         <Nav navbar>
-                            <NavItem ><NavLink className="nav-link" to="/todos">
+                            <NavItem ><NavLink className="nav-link" to="/todos" activeClassName="navlinkActive">
                                 <span className="fa fa-tasks fa-lg"></span> Todo
                             </NavLink></NavItem>
-                            <NavItem ><NavLink className="nav-link" to="/hooks">
+                            <NavItem ><NavLink className="nav-link" to="/hooks" activeClassName="navlinkActive">
                                 <span className="fa fa-laptop fa-lg"></span> Hooks
                             </NavLink></NavItem>
-                            <NavItem ><NavLink className="nav-link" to="/about">
+                            <NavItem ><NavLink className="nav-link" to="/formik" activeClassName="navlinkActive">
+                                <span className="fa fa-newspaper-o fa-lg"></span> Formik
+                            </NavLink></NavItem>
+                            <NavItem ><NavLink className="nav-link" to="/about" activeClassName="navlinkActive">
                                 <span className="fa fa-institution fa-lg"></span> About
                             </NavLink></NavItem>
                         </Nav>
